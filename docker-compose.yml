@@ -1,0 +1,30 @@
+version: "3.0"
+services:
+
+    server:
+      container_name: server
+      build:
+        context: ./
+        dockerfile: ./dockerfiles/server
+      command: python server.py
+      ports:
+        - "80:80"
+        - "9000:9000"
+      volumes:
+        - ./server:/var/server
+
+    react_client:
+      build:
+        context: ./
+        dockerfile: ./dockerfiles/react_client
+      command: yarn start
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./react_client:/var/react_client
+      depends_on:
+        - server
+
+volumes:
+  server:
+  react_client:
